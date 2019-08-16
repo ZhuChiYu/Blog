@@ -20,15 +20,16 @@ public class   ControllerExceptionHandler {
     public ModelAndView exceptionHander(HttpServletRequest request, Exception e) throws Exception {
         logger.error("Requst URL : {}，Exception : {}", request.getRequestURL(),e);
 
-//        判断状态是否被指定，
+//        判断状态是否被指定，如果被指定，则跳转到状态码指定的页面
         if (AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class) != null) {
             throw e;
         }
 
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("url",request.getRequestURL());
-        mv.addObject("exception", e);
-        mv.setViewName("error/error");
-        return mv;
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("url",request.getRequestURL());
+        modelAndView.addObject("exception", e);
+        modelAndView.setViewName("error/error");
+        return modelAndView;
+
     }
 }
