@@ -11,6 +11,12 @@
 [MyBatis Generator](http://www.mybatis.org/generator/)  
 [Mysql菜鸟教程](https://www.runoob.com/mysql/mysql-tutorial.html) 
 
+## 工具
+[快速搭建前端框架](https://v3.bootcss.com/getting-started/) 
+官网下载 Bootstrap源码，并加入到resource/static目录中 
+
+[Flyway数据库整合](https://flywaydb.org/getstarted/) 
+
 ## 脚本
 ```bash
 [数据库迁移脚本]
