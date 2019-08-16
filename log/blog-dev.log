@@ -9523,3 +9523,22 @@ java.lang.IllegalArgumentException: Invalid character found in method name. HTTP
 2019-08-16 11:42:15.028  INFO 17247 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
 2019-08-16 11:42:15.029  INFO 17247 --- [restartedMain] com.zcy.blog.BlogApplication             : Started BlogApplication in 2.118 seconds (JVM running for 3328.792)
 2019-08-16 11:42:15.032  INFO 17247 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2019-08-16 11:44:50.620  INFO 17247 --- [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-08-16 11:44:50.626  INFO 17247 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2019-08-16 11:44:50.632  INFO 17247 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 6 ms
+2019-08-16 12:11:35.453  INFO 17247 --- [Thread-44] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2019-08-16 12:11:43.486  INFO 19776 --- [restartedMain] com.zcy.blog.BlogApplication             : Starting BlogApplication on Franks-mac.local with PID 19776 (/Users/frankzhu/Documents/Workspaces/blog/target/classes started by frankzhu in /Users/frankzhu/Documents/Workspaces/blog)
+2019-08-16 12:11:43.489  INFO 19776 --- [restartedMain] com.zcy.blog.BlogApplication             : The following profiles are active: dev
+2019-08-16 12:11:43.629  INFO 19776 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2019-08-16 12:11:43.629  INFO 19776 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2019-08-16 12:11:50.171  INFO 19776 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2019-08-16 12:11:50.235  INFO 19776 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-08-16 12:11:50.236  INFO 19776 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.21]
+2019-08-16 12:11:50.580  INFO 19776 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-08-16 12:11:50.598  INFO 19776 --- [restartedMain] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 6968 ms
+2019-08-16 12:11:52.260  INFO 19776 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-08-16 12:11:52.827  INFO 19776 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2019-08-16 12:11:54.534  INFO 19776 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2019-08-16 12:11:54.613  INFO 19776 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2019-08-16 12:11:54.621  INFO 19776 --- [restartedMain] com.zcy.blog.BlogApplication             : Started BlogApplication in 12.782 seconds (JVM running for 15.162)
+2019-08-16 12:12:22.833  INFO 19776 --- [Thread-8] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
