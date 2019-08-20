@@ -4,6 +4,8 @@ import com.zcy.blog.NotFoundException;
 import com.zcy.blog.dao.BlogRepository;
 import com.zcy.blog.po.Blog;
 import com.zcy.blog.po.Type;
+import com.zcy.blog.service.BlogService;
+import com.zcy.blog.util.MarkdownUtils;
 import com.zcy.blog.util.MyBeanUtils;
 import com.zcy.blog.vo.BlogQuery;
 import org.springframework.beans.BeanUtils;
@@ -16,14 +18,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
+import javax.persistence.criteria.*;
+import java.util.*;
 
 @Service
 public class BlogServiceImpl implements BlogService {
@@ -32,37 +28,43 @@ public class BlogServiceImpl implements BlogService {
     @Autowired
     private BlogRepository blogRepository;
 
-    //根据主键查询
     @Override
     public Blog getBlog(Long id) {
         return blogRepository.getOne(id);
     }
 
+    @Transactional
+    @Override
+    public Blog getAndConvert(Long id) {
+        Blog blog = blogRepository.getOne(id);
+        if (blog == null) {
+            throw new NotFoundException("该博客不存在");
+        }
+        Blog b = new Blog();
+        BeanUtils.copyProperties(blog,b);
+        String content = b.getContent();
+        b.setContent(MarkdownUtils.markdownToHtmlExtensions(content));
 
-    //分页查询
-    //jpa封装了组合查询的方法
+        blogRepository.updateViews(id);
+        return b;
+    }
+
+
     @Override
     public Page<Blog> listBlog(Pageable pageable, BlogQuery blog) {
         return blogRepository.findAll(new Specification<Blog>() {
             @Override
-            //
             public Predicate toPredicate(Root<Blog> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
-                //组合条件放在list中
                 List<Predicate> predicates = new ArrayList<>();
                 if (!"".equals(blog.getTitle()) && blog.getTitle() != null) {
-                    //模糊查询条件
                     predicates.add(cb.like(root.<String>get("title"), "%"+blog.getTitle()+"%"));
                 }
                 if (blog.getTypeId() != null) {
-                    //类型判断
                     predicates.add(cb.equal(root.<Type>get("type").get("id"), blog.getTypeId()));
                 }
                 if (blog.isRecommend()) {
-                    //是否推荐判断
                     predicates.add(cb.equal(root.<Boolean>get("recommend"), blog.isRecommend()));
                 }
-
-                //将上述组合自动拼接成sql语句
                 cq.where(predicates.toArray(new Predicate[predicates.size()]));
                 return null;
             }
@@ -72,6 +74,18 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public Page<Blog> listBlog(Pageable pageable) {
         return blogRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Blog> listBlog(Long tagId, Pageable pageable) {
+        return blogRepository.findAll(new Specification<Blog>() {
+            @Override
+            //关联查询
+            public Predicate toPredicate(Root<Blog> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
+                Join join = root.join("tags");
+                return cb.equal(join.get("id"),tagId);
+            }
+        },pageable);
     }
 
     @Override
@@ -86,7 +100,22 @@ public class BlogServiceImpl implements BlogService {
         return blogRepository.findTop(pageable);
     }
 
-    //新增blog
+    @Override
+    public Map<String, List<Blog>> archiveBlog() {
+        List<String> years = blogRepository.findGroupYear();
+        Map<String, List<Blog>> map = new HashMap<>();
+        for (String year : years) {
+            map.put(year, blogRepository.findByYear(year));
+        }
+        return map;
+    }
+
+    @Override
+    public Long countBlog() {
+        return blogRepository.count();
+    }
+
+
     @Transactional
     @Override
     public Blog saveBlog(Blog blog) {
@@ -100,8 +129,6 @@ public class BlogServiceImpl implements BlogService {
         return blogRepository.save(blog);
     }
 
-    //更新
-    //数据库中根据id获取blog对象，若对象为空抛出自定义异常，若对象不为空，将要更新的博客拷贝给对象，
     @Transactional
     @Override
     public Blog updateBlog(Long id, Blog blog) {
@@ -109,7 +136,6 @@ public class BlogServiceImpl implements BlogService {
         if (b == null) {
             throw new NotFoundException("该博客不存在");
         }
-        //过滤掉属性值为空的属性，只拷贝不为空的属性
         BeanUtils.copyProperties(blog,b, MyBeanUtils.getNullPropertyNames(blog));
         b.setUpdateTime(new Date());
         return blogRepository.save(b);
