@@ -11,7 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 
 @ControllerAdvice
-public class   ControllerExceptionHandler {
+//拦截所有异常，并跳转到指定的error页面
+public class  ControllerExceptionHandler {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
